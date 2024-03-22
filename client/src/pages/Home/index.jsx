@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { requestPosts } from "src/Api/posts";
 import { useQuery } from "react-query";
+import base_url from "src/Api/constant";
 
 export default function Home() {
   const { user } = useAuth();
@@ -41,13 +42,13 @@ export default function Home() {
         posts.map((data) => (
           <Grid item justifyContent={"center"} xs={12} key={data._id}>
             <Grid container justifyContent="center">
-              <Card sx={{ maxWidth: 345 }}>
+              <Card sx={{ width: 400 }}>
                 <CardHeader
                   avatar={
                     <Avatar
                       sx={{ bgcolor: red[500] }}
                       aria-label="recipe"
-                      src={`http://localhost:3001/${data.userPhoto}`}
+                      src={`${base_url}/${data.userPhoto}`}
                     />
                   }
                   action={
@@ -60,8 +61,8 @@ export default function Home() {
                 <Link to={`/postDetails/${data._id}`}>
                   <CardMedia
                     component="img"
-                    height="194"
-                    image={`http://localhost:3001/${data.postImg}`}
+                    height="300"
+                    image={`${base_url}/${data.postImg}`}
                     alt="Paella dish"
                   />
                 </Link>
