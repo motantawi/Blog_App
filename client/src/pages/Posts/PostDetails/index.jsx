@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -13,49 +12,44 @@ import {
 } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import base_url from "src/Api/constant";
+import { useMutation, useQuery } from "react-query";
+import {
+  requestCreateComment,
+  requestPostComments,
+  requestPostDetails,
+} from "src/Api/posts";
+import { toast } from "react-toastify";
 
 const PostDetails = () => {
   const { id } = useParams();
-  const [post, setPost] = useState({});
-  const [comments, setComments] = useState([]);
   const [addedComment, setAddedComment] = useState("");
-  useEffect(() => {
-    axios
-      .get(`${base_url}/posts/${id}`, {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      })
-      .then((res) => setPost(res.data));
-  }, [id]);
+  const { data: post } = useQuery({
+    queryKey: ["getPostDetails"],
+    suspense: true,
+    queryFn: () => requestPostDetails({ id }),
+  });
 
-  useEffect(() => {
-    axios
-      .get(`${base_url}/posts/${id}/comments`, {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      })
-      .then((res) => {
-        setComments(res.data);
-      }, []);
-  }, [addedComment, id]);
+  const { data: comments, refetch } = useQuery({
+    queryKey: ["getPostComments"],
+    suspense: true,
+    queryFn: () => requestPostComments({ id }),
+  });
+  const { mutate: createComment } = useMutation({
+    mutationKey: ["createPostComment"],
+    suspense: true,
+    mutationFn: () => requestCreateComment({ id, addedComment }),
+    onSuccess: () => {
+      refetch();
+      setAddedComment("");
+    },
+  });
 
-  const handleSubmit = () => {
-    if (addedComment !== "") {
-      axios
-        .post(
-          `${base_url}/posts/${id}/comments`,
-          {
-            commentBody: addedComment,
-            postId: id,
-          },
-          {
-            headers: { accessToken: localStorage.getItem("accessToken") },
-          }
-        )
-        .then(() => {
-          setAddedComment("");
-        })
-        .catch((err) => console.log(err));
-    } else {
+  const handleCreateComment = () => {
+    if (addedComment === "") {
+      toast.error("Must provide a comment");
       return null;
+    } else {
+      createComment();
     }
   };
 
@@ -133,7 +127,7 @@ const PostDetails = () => {
                 backgroundColor: "#0d47a1",
                 color: "#fff",
               }}
-              onClick={handleSubmit}
+              onClick={handleCreateComment}
             >
               Add
             </Button>
