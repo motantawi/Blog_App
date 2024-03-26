@@ -101,14 +101,14 @@ function Navbar() {
                   {pages.map((page) => {
                     return (
                       <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">
-                          <Link
-                            to={page.path}
-                            style={{ all: "unset", cursor: "pointer" }}
-                          >
+                        <Link
+                          to={page.path}
+                          style={{ all: "unset", cursor: "pointer" }}
+                        >
+                          <Typography textAlign="center">
                             {page.name}
-                          </Link>
-                        </Typography>
+                          </Typography>
+                        </Link>
                       </MenuItem>
                     );
                   })}
@@ -136,18 +136,18 @@ function Navbar() {
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                 {pages.map((page) => {
                   return (
-                    <Button
+                    <Link
+                      to={page.path}
+                      style={{ all: "unset", cursor: "pointer" }}
                       key={page.id}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: "white", mx: 2, display: "block" }}
                     >
-                      <Link
-                        to={page.path}
-                        style={{ all: "unset", cursor: "pointer" }}
+                      <Button
+                        onClick={handleCloseNavMenu}
+                        sx={{ my: 2, color: "white", mx: 2, display: "block" }}
                       >
                         {page.name}
-                      </Link>
-                    </Button>
+                      </Button>
+                    </Link>
                   );
                 })}
               </Box>
