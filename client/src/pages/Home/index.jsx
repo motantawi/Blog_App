@@ -17,6 +17,7 @@ import { requestPosts } from "src/Api/posts";
 import { useQuery } from "react-query";
 import base_url from "src/Api/constant";
 import useUser from "src/hooks/useUser";
+import dayjs from "dayjs";
 
 export default function Home() {
   const { user } = useUser();
@@ -51,12 +52,10 @@ export default function Home() {
                       src={`${base_url}/${data.userPhoto}`}
                     />
                   }
-                  action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
                   title={`${data.author}`}
+                  subheader={dayjs(data.createdAt).format(
+                    "D/MMMM/YYYY - h:mm a"
+                  )}
                 />
                 <Link to={`/postDetails/${data._id}`}>
                   <CardMedia
@@ -79,8 +78,15 @@ export default function Home() {
                     <FavoriteIcon />
                   </IconButton>
                   {_id === data.userId ? (
-                    <IconButton aria-label="delete">
-                      <DeleteForeverIcon id={data._id} />
+                    <IconButton
+                      aria-label="delete"
+                      onClick={(e) => console.log(e)}
+                    >
+                      <DeleteForeverIcon
+                        width={"100%"}
+                        height={"100%"}
+                        id={data._id}
+                      />
                     </IconButton>
                   ) : null}
                 </CardActions>
