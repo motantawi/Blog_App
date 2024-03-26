@@ -54,7 +54,7 @@ const login = async (req, res) => {
     //   // secure: true, // Uncomment this line in production for HTTPS
     // });
 
-    res.status(200).json({ message: "Login successful", accessToken, user });
+    res.status(200).json({ user: { accessToken, ...user._doc } });
   } catch (error) {
     res.status(500).json({ message: "Login failed" });
   }
