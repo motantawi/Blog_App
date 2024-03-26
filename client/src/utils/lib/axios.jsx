@@ -2,14 +2,10 @@ import axios from "axios";
 import base_url from "src/Api/constant";
 
 const getUser = () => {
-  const localStorageUser = localStorage.getItem("user");
-  return JSON.parse(localStorageUser);
+  const localStorageUser = localStorage.getItem("user-storage");
+  return JSON.parse(localStorageUser)["state"]["user"];
 };
 
-const getAccessToken = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  return accessToken;
-};
 
 const privateInstance = axios.create({
   baseURL: `${base_url}`,
@@ -18,15 +14,11 @@ const privateInstance = axios.create({
 privateInstance.interceptors.request.use(
   (config) => {
     const user = getUser();
-    const accessToken = getAccessToken();
-
-    if (user || accessToken) {
-      config.headers["accessToken"] = accessToken;
+    if (user) {
+      config.headers["accessToken"] = user.accessToken;
     } else {
-      // If access token is not in localStorage, you can handle it here.
-      // For example, you can redirect the user to a login page or perform another action.
       console.error("Access token not found in localStorage");
-      // You may also choose to reject the request with an error.
+      window.location.replace("/login");
       return Promise.reject("Access token not found in localStorage");
     }
     return config;
