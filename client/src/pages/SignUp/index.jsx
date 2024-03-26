@@ -71,19 +71,33 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <Typography
+        component="h1"
+        variant="h4"
+        position={"relative"}
+        top={60}
+        textAlign={"center"}
+      >
+        Welcome To MYBLOG
+      </Typography>
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 4,
+          marginTop: 15,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          backgroundColor: "#fff",
+          borderRadius: 3,
+          py: 5,
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography>SignUp</Typography>
+        <Typography component="h1" variant="h5">
+          SignUp
+        </Typography>
         <form
           onSubmit={handleSubmit((values) => handleCreateUser(values))}
           encType="multipart/form-data"

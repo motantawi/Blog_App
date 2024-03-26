@@ -54,13 +54,25 @@ export default function SignIn() {
   return (
     <>
       <Container component="main" maxWidth="xs">
+        <Typography
+          component="h1"
+          variant="h4"
+          position={"relative"}
+          top={60}
+          textAlign={"center"}
+        >
+          Welcome To MYBLOG
+        </Typography>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 10,
+            marginTop: 15,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            backgroundColor: "#fff",
+            borderRadius: 3,
+            py: 5,
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
