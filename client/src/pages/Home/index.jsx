@@ -11,17 +11,18 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Link } from "react-router-dom";
-import { requestPosts } from "src/Api/posts";
-import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { requestDeletePost, requestPosts } from "src/Api/posts";
+import { useMutation, useQuery } from "react-query";
 import base_url from "src/Api/constant";
 import useUser from "src/hooks/useUser";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const { user } = useUser();
   const { _id } = user;
+  const navigate = useNavigate();
 
   const {
     data: posts,
@@ -32,6 +33,20 @@ export default function Home() {
     suspense: true,
     queryFn: () => requestPosts(),
   });
+
+  const { mutate: deletePost } = useMutation({
+    mutationKey: ["deletePost"],
+    suspense: true,
+    mutationFn: (id) => requestDeletePost(id),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const handleDeletePost = (id) => {
+    deletePost(id);
+    toast.success("Post Deleted Successfully");
+  };
 
   useEffect(() => {
     refetch();
@@ -57,14 +72,16 @@ export default function Home() {
                     "D/MMMM/YYYY - h:mm a"
                   )}
                 />
-                <Link to={`/postDetails/${data._id}`}>
-                  <CardMedia
-                    component="img"
-                    height="300"
-                    image={`${base_url}/${data.postImg}`}
-                    alt="Paella dish"
-                  />
-                </Link>
+
+                <CardMedia
+                  component="img"
+                  height="300"
+                  style={{ cursor: "pointer" }}
+                  image={`${base_url}/${data.postImg}`}
+                  alt="Paella dish"
+                  onClick={() => navigate(`/postDetails/${data._id}`)}
+                />
+
                 <CardContent>
                   <Typography variant="body2" color="text.secondary">
                     {data.postText}
@@ -80,13 +97,9 @@ export default function Home() {
                   {_id === data.userId ? (
                     <IconButton
                       aria-label="delete"
-                      onClick={(e) => console.log(e)}
+                      onClick={() => handleDeletePost(data._id)}
                     >
-                      <DeleteForeverIcon
-                        width={"100%"}
-                        height={"100%"}
-                        id={data._id}
-                      />
+                      <DeleteForeverIcon width={"100%"} height={"100%"} />
                     </IconButton>
                   ) : null}
                 </CardActions>
