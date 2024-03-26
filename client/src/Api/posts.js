@@ -39,10 +39,18 @@ const requestCreatePost = async ({ postData, id }) => {
   return request;
 };
 
+const requestDeletePost = async (id) => {
+  const request = await privateInstance.delete(
+    `${base_url}${POST_PATH}/${id}/delete`
+  );
+  return request;
+};
+
 export {
   requestPosts,
   requestCreatePost,
   requestPostDetails,
   requestPostComments,
   requestCreateComment,
+  requestDeletePost,
 };
