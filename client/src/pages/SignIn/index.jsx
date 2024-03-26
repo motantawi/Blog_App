@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,14 +9,14 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useAuth } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "src/utils/Schema";
 import { useMutation } from "react-query";
 import { requestLogin } from "src/Api/auth";
+import useUser from "src/hooks/useUser";
 export default function SignIn() {
-  const { setUser } = useAuth();
+  const { setUser, user } = useUser();
   const navigate = useNavigate();
   const {
     register,
@@ -36,16 +36,20 @@ export default function SignIn() {
     mutationFn: (credentials) => requestLogin(credentials),
     onSuccess: ({ data }) => {
       toast.success("تم تسجيل الدخول بنجاح");
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("accessToken", data.accessToken);
       setUser(data.user);
-      navigate("/");
+      // navigate("/");
     },
     onError: (error) => {
       toast.error(error.response.data.message);
       setError({ email: " ", password: " " });
     },
   });
+
+  useEffect(() => {
+    if (user !== null) {
+      return navigate("/");
+    }
+  }, [navigate, user]);
 
   return (
     <>

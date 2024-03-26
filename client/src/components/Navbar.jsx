@@ -13,13 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
 import base_url from "src/Api/constant";
+import useUser from "src/hooks/useUser";
 
-const pages = [{ id: 1, path: "/createpost", name: "Create" }];
+const pages = [{ id: 1, path: "/createpost", name: "Create Post" }];
 
 function Navbar() {
-  const auth = useAuth();
+  const { user, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -40,15 +40,13 @@ function Navbar() {
     setAnchorElUser(null);
   };
   const handlelogout = () => {
-    auth.setUser(null);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    logout();
     navigate("/login", { replace: true });
   };
 
   return (
     <>
-      {auth.user !== null ? (
+      {user !== null ? (
         <AppBar position="sticky" color="primary">
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -61,13 +59,13 @@ function Navbar() {
                   display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
                   fontWeight: 700,
-                  letterSpacing: ".3rem",
+                  letterSpacing: ".2rem",
                   color: "inherit",
                   textDecoration: "none",
                 }}
               >
                 <Link to="/" style={{ all: "unset", cursor: "pointer" }}>
-                  BLOG
+                  MYBLOG
                 </Link>
               </Typography>
 
@@ -126,13 +124,13 @@ function Navbar() {
                   flexGrow: 1,
                   fontFamily: "monospace",
                   fontWeight: 700,
-                  letterSpacing: ".3rem",
+                  letterSpacing: ".2rem",
                   color: "inherit",
                   textDecoration: "none",
                 }}
               >
                 <Link to="/" style={{ all: "unset", cursor: "pointer" }}>
-                  BLOG
+                  MYBLOG
                 </Link>
               </Typography>
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -159,7 +157,7 @@ function Navbar() {
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt="Remy Sharp"
-                      src={`${base_url}/${auth.user.photo}`}
+                      src={`${base_url}/${user.photo}`}
                     />
                   </IconButton>
                 </Tooltip>

@@ -13,13 +13,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
 import { requestPosts } from "src/Api/posts";
 import { useQuery } from "react-query";
 import base_url from "src/Api/constant";
+import useUser from "src/hooks/useUser";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user } = useUser();
   const { _id } = user;
 
   const {

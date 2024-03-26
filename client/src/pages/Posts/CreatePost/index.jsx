@@ -5,15 +5,15 @@ import { useState } from "react";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/system";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../context/authContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { requestCreatePost } from "src/Api/posts";
 import { createPostSchema } from "src/utils/Schema";
+import useUser from "src/hooks/useUser";
 
 function CreatePost() {
-  const { user } = useAuth();
+  const { user } = useUser();
   const { _id } = user;
   const navigate = useNavigate();
   const [postImg, setPostImg] = useState(null);
@@ -45,7 +45,6 @@ function CreatePost() {
     },
     mutationFn: (newPost) => requestCreatePost(newPost),
   });
-
 
   const handlePhoto = (e) => {
     setPostImg(e.target.files[0]);

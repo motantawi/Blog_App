@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,17 +8,17 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import { requestCreateUser } from "src/Api/auth";
 import { createAccountSchema } from "src/utils/Schema";
+import useUser from "src/hooks/useUser";
 
 export default function SignUp() {
   const navigate = useNavigate();
-
+  const { user } = useUser();
   const [photo, setPhoto] = useState(null);
 
   const {
@@ -62,6 +62,12 @@ export default function SignUp() {
     userData.append("photo", photo);
     createUser(userData);
   };
+
+  useEffect(() => {
+    if (user !== null) {
+      return navigate("/");
+    }
+  }, [navigate, user]);
 
   return (
     <Container component="main" maxWidth="xs">
