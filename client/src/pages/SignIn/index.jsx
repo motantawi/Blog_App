@@ -61,7 +61,16 @@ export default function SignIn() {
           top={60}
           textAlign={"center"}
         >
-          Welcome To MYBLOG
+          Welcome To
+          <Typography
+            component="h1"
+            variant="h4"
+            display={"inline"}
+            color={"#0d47a1"}
+          >
+            {" "}
+            MYBLOG
+          </Typography>
         </Typography>
         <CssBaseline />
         <Box
