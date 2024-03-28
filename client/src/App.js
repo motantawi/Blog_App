@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import CssBaseline from "@mui/material/CssBaseline";
 import RequireAuth from "./components/RequireAuth";
@@ -11,13 +11,14 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import { Suspense } from "react";
 import Loading from "src/components/Loading.jsx";
+import ComponentErrorWrapper from "src/components/ErrorFallback";
 
 const App = () => {
   return (
     <>
-      <CssBaseline />
-      <Suspense fallback={<Loading />}>
-        <Router>
+        <CssBaseline />
+      <ComponentErrorWrapper>
+        <Suspense fallback={<Loading />}>
           <Navbar />
           <Routes>
             <Route
@@ -57,8 +58,8 @@ const App = () => {
 
             <Route path="*" element={<Home />} />
           </Routes>
-        </Router>
-      </Suspense>
+        </Suspense>
+      </ComponentErrorWrapper>
     </>
   );
 };
