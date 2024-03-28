@@ -2,7 +2,7 @@
 
 ## Technologies
 
-#### Frontend => React , MUI , React-Query , React-Router-Dom ,React-Hook-Form , Yup , React-Toastify , Zustand for state management , React-Error-Boundary for handling UI errors
+#### Frontend => React , MUI , React-Query , React-Router-Dom ,React-Hook-Form , Yup , React-Toastify , Zustand for state management , React-Error-Boundary for Preventing UI not to break
 
 #### Backend => Node , Express , MongoDB , Mongoose
 
