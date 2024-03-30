@@ -128,6 +128,7 @@ export default function SignIn() {
               Sign In
             </Button>
             <Button
+              type="button"
               style={{
                 marginLeft: "auto",
                 background: "none",

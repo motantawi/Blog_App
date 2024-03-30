@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -19,11 +19,12 @@ import {
   requestPostDetails,
 } from "src/Api/posts";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 const PostDetails = () => {
   const { id } = useParams();
   const [addedComment, setAddedComment] = useState("");
-  const { data: post } = useQuery({
+  const { data: post, refetch: refetchPost } = useQuery({
     queryKey: ["getPostDetails"],
     suspense: true,
     queryFn: () => requestPostDetails({ id }),
@@ -52,6 +53,11 @@ const PostDetails = () => {
       createComment();
     }
   };
+  useEffect(() => {
+    refetch();
+    refetchPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container sx={{ py: { xs: 8, lg: 5 } }}>
@@ -59,14 +65,22 @@ const PostDetails = () => {
         <Grid item lg={6} md={12} sm={12} xs={12}>
           <Box
             sx={{
-              p: 6,
+              p: 3,
               border: 1,
               borderColor: "grey.200",
               borderRadius: 1,
               boxShadow: 1,
+              overflow: "hidden !important",
             }}
             bgcolor={blue[900]}
           >
+            <img
+              src={`${base_url}/${post.postImg}`}
+              width={"80%"}
+              style={{ margin: "0px 45px 20px 45px" }}
+              alt=""
+            />
+
             <Typography
               variant="h4"
               component="h2"
@@ -76,7 +90,7 @@ const PostDetails = () => {
             >
               {post.title}
             </Typography>
-            <Typography variant="body2" color={grey[300]} mb={5}>
+            <Typography variant="body1" color={grey[100]} mb={5}>
               {post.postText}
             </Typography>
             <Box
@@ -86,14 +100,30 @@ const PostDetails = () => {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <Avatar
+                  style={{ position: "relative" }}
                   src={`${base_url}/${post.userPhoto}`}
-                  sx={{ width: 28, height: 28, mr: 1 }}
+                  sx={{ width: 50, height: 50, mr: 1 }}
                 />
-                <Typography color="#fff" variant="subtitle1">
-                  {post.author}
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography color="#fff" variant="subtitle1">
+                    {post.author}
+                  </Typography>
+                  <Typography color="#fff" variant="caption">
+                    {dayjs(post.createdAt).format("D/MMMM/YYYY - h:mm a")}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -103,11 +133,9 @@ const PostDetails = () => {
           <Box
             sx={{
               p: 3,
-              border: 1,
-              borderColor: "grey.200",
-              borderRadius: 1,
               boxShadow: 1,
             }}
+            bgcolor={"#fff"}
           >
             <TextField
               id="outlined-basic"
@@ -135,13 +163,11 @@ const PostDetails = () => {
           <Box
             sx={{
               p: 3,
-              border: 1,
-              borderColor: "grey.200",
-              borderRadius: 1,
               boxShadow: 1,
               maxHeight: "300px",
               overflow: "scroll",
             }}
+            bgcolor={"#fff"}
           >
             {comments.map((comment) => {
               return (

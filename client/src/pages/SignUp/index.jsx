@@ -160,6 +160,23 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+          <Button
+            type="button"
+            style={{
+              marginLeft: "auto",
+              background: "none",
+              textDecoration: "underLine",
+              width: "fit-content",
+              fontSize: "14px",
+              textTransform: "lowercase",
+              fontWeight: "100",
+              color: "#000",
+            }}
+            className="showBtn"
+            onClick={() => navigate("/login")}
+          >
+            Have an account? Sign in
+          </Button>
         </form>
       </Box>
     </Container>
